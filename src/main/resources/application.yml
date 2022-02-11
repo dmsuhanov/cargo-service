@@ -1,0 +1,21 @@
+spring:
+  r2dbc:
+    username: postgres
+    password: postgres
+    url: r2dbc:postgresql://localhost:5432/postgres
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: postgres
+    change-log: classpath:changelog/master.yaml
+
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
