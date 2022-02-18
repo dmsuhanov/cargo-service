@@ -1,5 +1,7 @@
 package com.suhan.cargo.service;
 
+import com.suhan.cargo.controller.model.CargoDto;
+import com.suhan.cargo.controller.model.CargoFormDto;
 import com.suhan.cargo.domain.cargo.Cargo;
 import reactor.core.publisher.Mono;
 
@@ -26,10 +28,9 @@ public interface CargoService {
 //    Mono<Cargo> copyPrototype(UUID cargoId);
 
     /**
-     * Создание нового груза.
-     *
-     * @return новый груз
+     * Резервирование отправки груза.
+     * @param cargoFormDto форма заявки на отправку
+     * @return груз
      */
-    Mono<Cargo> createNew();
-
+    Mono<Cargo> booking(CargoFormDto cargoFormDto);
 }

@@ -1,5 +1,14 @@
 databaseChangeLog:
   - include:
+      file: location.sql
+      relativeToChangelogFile: true
+  - include:
       file: customer.sql
+      relativeToChangelogFile: true
+  - include:
+      file: role.sql
+      relativeToChangelogFile: true
+  - include:
+      file: cargo.sql
       relativeToChangelogFile: true
 

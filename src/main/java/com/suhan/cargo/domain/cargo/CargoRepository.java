@@ -19,12 +19,20 @@ public interface CargoRepository {
     Mono<Cargo> findById(UUID id);
 
     /**
-     * Сохранение груза.
+     * Сохранение нового груза.
      *
      * @param cargo груз
      * @return сохраненный груз
      */
-    Mono<Cargo> save(Cargo cargo);
+    Mono<Cargo> create(Mono<Cargo> cargo);
+
+    /**
+     * Обновление нового груза.
+     *
+     * @param cargo груз
+     * @return сохраненный груз
+     */
+    Mono<Cargo> update(Mono<Cargo> cargo);
 
     /**
      * Удаление груза по идентификатору.

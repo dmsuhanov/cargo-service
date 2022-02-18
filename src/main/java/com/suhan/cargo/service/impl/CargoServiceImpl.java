@@ -1,21 +1,35 @@
 package com.suhan.cargo.service.impl;
 
+import com.suhan.cargo.controller.model.CargoFormDto;
+import com.suhan.cargo.domain.DeliverySpecification;
 import com.suhan.cargo.domain.cargo.Cargo;
 import com.suhan.cargo.domain.CargoFactory;
 import com.suhan.cargo.domain.cargo.CargoRepository;
-import com.suhan.cargo.repository.LocationRepository;
+import com.suhan.cargo.domain.cargo.CustomerRole;
+import com.suhan.cargo.domain.customer.Customer;
+import com.suhan.cargo.domain.customer.CustomerRepository;
+import com.suhan.cargo.domain.location.Location;
+import com.suhan.cargo.domain.location.LocationRepository;
+import com.suhan.cargo.domain.role.Role;
+import com.suhan.cargo.domain.role.RoleRepository;
 import com.suhan.cargo.service.CargoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class CargoServiceImpl implements CargoService {
 
     private final CargoRepository cargoRepository;
-    private final LocationRepository locationRepository;
     private final CargoFactory cargoFactory;
+    private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
+    private final LocationRepository locationRepository;
+
 
 //    @Override
 //    public Mono<Cargo> changeLocation(UUID cargoId, UUID locationId) {
@@ -45,8 +59,20 @@ public class CargoServiceImpl implements CargoService {
 //    }
 
     @Override
-    public Mono<Cargo> createNew() {
-        return cargoRepository.save(cargoFactory.createNew());
+    public Mono<Cargo> booking(CargoFormDto cargoFormDto) {
+        Mono<Cargo> cargo = Mono.zip(
+                customerRepository.findById(cargoFormDto.getCustomerSenderId()),
+                roleRepository.sender(),
+                customerRepository.findById(cargoFormDto.getCustomerRecipientId()),
+                roleRepository.recipient(),
+                locationRepository.findById(cargoFormDto.getLocationToId())
+        ).map(zip -> {
+            final CustomerRole sender = new CustomerRole(zip.getT1(), zip.getT2());
+            final CustomerRole recipient = new CustomerRole(zip.getT3(), zip.getT4());
+            final DeliverySpecification goal = new DeliverySpecification(zip.getT5());
+            return new Cargo(Set.of(sender, recipient), goal);
+        });
+        return cargoRepository.create(cargo);
     }
 
 }

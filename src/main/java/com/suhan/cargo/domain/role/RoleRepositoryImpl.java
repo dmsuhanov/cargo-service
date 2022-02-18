@@ -1,11 +1,14 @@
 package com.suhan.cargo.domain.role;
 
+import com.suhan.cargo.domain.customer.Customer;
+import com.suhan.cargo.domain.customer.CustomerEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.data.relational.core.query.Update;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -58,12 +61,25 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public Mono<Role> sender() {
-        return findById(UUID.fromString("7e9ae44d-a418-48d7-9f63-ad77cd42ce87"));
+        return template.select(RoleEntity.class)
+                .matching(Query.query(Criteria.where("name").is("sender")))
+                .one()
+                .map(cargoEntity -> new Role(cargoEntity.getId(), cargoEntity.getName()));
     }
 
     @Override
     public Mono<Role> recipient() {
-        return findById(UUID.fromString("a7143386-18aa-428f-8a9c-378c169137d8"));
+        return template.select(RoleEntity.class)
+                .matching(Query.query(Criteria.where("name").is("recipient")))
+                .one()
+                .map(cargoEntity -> new Role(cargoEntity.getId(), cargoEntity.getName()));
+    }
+
+    @Override
+    public Flux<Role> findAll() {
+        return template.select(RoleEntity.class)
+                .all()
+                .map(roleEntity -> new Role(roleEntity.getId(), roleEntity.getName()));
     }
 
 }

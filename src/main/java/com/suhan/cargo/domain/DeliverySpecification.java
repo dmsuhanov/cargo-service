@@ -1,28 +1,25 @@
 package com.suhan.cargo.domain;
 
-import java.time.LocalDateTime;
+import com.suhan.cargo.domain.location.Location;
 
 /**
  * Задание на доставку.
  */
 public final class DeliverySpecification extends AssertionConcern implements ValueObject {
 
-    private final Location location;
-    private final LocalDateTime dateTime;
+    private final UnitOfWork<Location> location;
 
-    public DeliverySpecification(Location location, LocalDateTime dateTime) {
+    public DeliverySpecification(Location location) {
+        this(new UnitOfWork<>(location, false));
+    }
+
+    public DeliverySpecification(UnitOfWork<Location> location) {
         this.assertArgumentNotNull(location, "The location must not be null.");
-        this.assertArgumentNotNull(dateTime, "The dateTime must not be null.");
         this.location = location;
-        this.dateTime = dateTime;
     }
 
-    public Location location() {
+    public UnitOfWork<Location> unitLocation() {
         return location;
-    }
-
-    public LocalDateTime dateTime() {
-        return dateTime;
     }
 
 }

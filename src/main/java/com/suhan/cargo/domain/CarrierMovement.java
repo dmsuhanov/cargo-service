@@ -1,5 +1,7 @@
 package com.suhan.cargo.domain;
 
+import com.suhan.cargo.domain.location.Location;
+
 import java.util.Optional;
 import java.util.UUID;
 

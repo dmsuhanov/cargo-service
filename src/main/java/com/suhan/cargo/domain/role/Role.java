@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Клиент.
+ * Роль.
  */
 public final class Role extends AssertionConcern implements Entity {
 

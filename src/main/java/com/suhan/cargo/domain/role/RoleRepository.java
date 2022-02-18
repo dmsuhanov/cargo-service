@@ -1,6 +1,7 @@
 package com.suhan.cargo.domain.role;
 
-import com.suhan.cargo.domain.customer.Customer;
+import io.micrometer.core.instrument.binder.db.MetricsDSLContext;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -47,4 +48,11 @@ public interface RoleRepository {
      * @return роль
      */
     Mono<Role> recipient();
+
+    /**
+     * Получение всех ролей.
+     *
+     * @return роли
+     */
+    Flux<Role> findAll();
 }

@@ -1,4 +1,4 @@
-package com.suhan.cargo.domain.cargo;
+package com.suhan.cargo.domain.location;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,20 +6,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Table("cargo")
+@Table("location")
 @Getter
 @Setter
-public class CargoEntity {
+public class LocationEntity {
 
     @Id
     @Column("id")
     private UUID id;
-    @Column("create_at")
-    private LocalDateTime createAt;
-    @Column("goal_location_id")
-    private UUID goalLocationId;
+    private String name;
+    private String description;
 
 }
